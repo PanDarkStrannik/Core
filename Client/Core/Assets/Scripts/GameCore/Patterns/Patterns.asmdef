@@ -1,0 +1,16 @@
+{
+    "name": "Patterns",
+    "rootNamespace": "GameCore.Patterns",
+    "references": [
+        "GUID:3ad6d70bb4ec3e441914da9e60e5b2c1"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
