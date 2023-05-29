@@ -1,9 +1,8 @@
 {
-    "name": "Systems",
-    "rootNamespace": "GameCore.Systems",
+    "name": "ConditionSystem",
+    "rootNamespace": "GameCore.Systems.ConditionSystem",
     "references": [
-        "GUID:1dc7366008971bc4cb5452ebbd3fafee",
-        "GUID:f504ba75606bfb448a2fcfda5ecdb02d"
+        "GUID:0210282a3cbf64a4b9c69a9791cce60d"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace GameCore.Proto
 {
     public abstract class BaseProtoInstance<T> : MonoBehaviour
-        where T : BaseProtoInstance<T>.BaseProtoControllerFabric
+        where T : BaseProtoInstance<T>.BaseProtoControllerFabric, new()
     {
         [SerializeField] private ProtoData _protoData;
 
@@ -14,11 +14,11 @@ namespace GameCore.Proto
 
         public IReadOnlyList<IProtoModuleController> Controllers { get; private set; }
 
-        private T fabric;
+        private readonly T _fabric = new T();
 
         private void Awake()
         {
-            Controllers = _protoData.ProtoModules.Select(e => fabric.Create(e)).ToList();
+            Controllers = _protoData.ProtoModules.Select(e => _fabric.Create(e)).ToList();
             Initialize();
         }
 
@@ -26,7 +26,7 @@ namespace GameCore.Proto
         {
 
         }
-        public abstract class BaseProtoControllerFabric : InitializerFabric<IProtoModuleController, BaseProtoModule>
+        public abstract class BaseProtoControllerFabric : InitializerFabric<BaseProtoModuleController<BaseProtoModule>, BaseProtoModule>
         {
 
         }

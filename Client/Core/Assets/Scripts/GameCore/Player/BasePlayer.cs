@@ -50,7 +50,7 @@ namespace GameCore
             return element;
         }
 
-        public abstract class BasePlayerControllerFabric : InitializerFabric<IBasePlayerModuleController, BasePlayerModule>
+        public abstract class BasePlayerControllerFabric : InitializerFabric<BasePlayerModuleController<BasePlayerModule>, BasePlayerModule>
         {
 
         }

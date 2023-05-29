@@ -1,12 +1,9 @@
 {
-    "name": "GameCore",
-    "rootNamespace": "GameCore",
+    "name": "GameManager",
+    "rootNamespace": "GameCore.GameManager",
     "references": [
-        "GUID:3ad6d70bb4ec3e441914da9e60e5b2c1",
         "GUID:0210282a3cbf64a4b9c69a9791cce60d",
-        "GUID:e7a002491cb97654fb6550a0c818f816",
-        "GUID:a79e149034864794c9defb194b2ba5fe",
-        "GUID:a0179ba8960bd6141bb4b142a954f9f6"
+        "GUID:3ad6d70bb4ec3e441914da9e60e5b2c1"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

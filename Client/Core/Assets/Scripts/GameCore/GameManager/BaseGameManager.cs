@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Patterns;
 using GameCore.Utils;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace GameCore.GameManager
@@ -39,7 +38,7 @@ namespace GameCore.GameManager
             return element;
         }
 
-        public abstract class BaseGameManageControllerFabric : InitializerFabric<IBaseGameManagerModuleController, BaseGameManagerModule>
+        public abstract class BaseGameManageControllerFabric : InitializerFabric<BaseGameManagerModuleController<BaseGameManagerModule>, BaseGameManagerModule>
         {
         }
     }

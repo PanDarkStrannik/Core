@@ -17,7 +17,7 @@ namespace GameCore.Patterns
     }
 
     public abstract class InitializerFabric<TCreated, TVData> : Fabric<TCreated, TVData>
-        where TCreated : IFabricCreated 
+        where TCreated : FabricCreated<TVData>
     {
         protected override TCreated InternalCreate(TVData data, Type wantCreate)
         {
@@ -27,8 +27,16 @@ namespace GameCore.Patterns
         }
     }
 
-    public interface IFabricCreated
+    public abstract class FabricCreated<TData> : IDataDriver<TData>
     {
-        public void Initialize(object data);
+        public TData Data { get; private set; }
+
+        public void Initialize(TData data)
+        {
+            Data = data;
+            InternalInitialize();
+        }
+
+        protected abstract void InternalInitialize();
     }
 }
