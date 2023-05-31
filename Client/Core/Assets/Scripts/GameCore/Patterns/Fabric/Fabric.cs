@@ -27,7 +27,7 @@ namespace GameCore.Patterns
         }
     }
 
-    public abstract class FabricCreated<TData> : IDataDriver<TData>
+    public abstract class FabricCreated<TData> : IDataController<TData>
     {
         public TData Data { get; private set; }
 
