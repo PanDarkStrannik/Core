@@ -6,17 +6,12 @@ namespace GameCore
     public abstract class BaseGameManagerModuleController<TData> : DataControllerBase<TData>, IBaseGameManagerModuleController
         where TData : BaseGameManagerModule
     {
-        protected BaseGameManager GameManager { get; private set; }
+        protected GameManager.GameManager GameManager { get; private set; }
 
-        public void GameManagerPrepared(BaseGameManager gameManager)
+        public void GameManagerPrepared(GameManager.GameManager gameManager)
         {
             GameManager = gameManager;
             GameManagerPrepared();
-        }
-
-        public virtual void Refresh()
-        {
-
         }
 
         protected virtual void GameManagerPrepared()
@@ -27,7 +22,6 @@ namespace GameCore
 
     public interface IBaseGameManagerModuleController : IController
     {
-        public void GameManagerPrepared(BaseGameManager gameManager);
-        public void Refresh();
+        public void GameManagerPrepared(GameManager.GameManager gameManager);
     }
 }

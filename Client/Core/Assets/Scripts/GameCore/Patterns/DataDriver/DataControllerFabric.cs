@@ -27,10 +27,7 @@ namespace GameCore.Patterns
         private static Dictionary<Type, Type> CreateDataCreatedPair()
         {
             var controllerType = typeof(IDataController<>);
-
-            
-
-            var typeChildren = Utils.FinderUtils.TypeFinder.FindChildrenTypes(controllerType);
+            var typeChildren = Utils.TypeUtils.TypeFinder.FindChildrenTypes(controllerType);
 
             return typeChildren
                 .Select(GetControllerDataPair)
@@ -39,7 +36,7 @@ namespace GameCore.Patterns
 
         private static KeyValuePair<Type, Type> GetControllerDataPair(Type controller)
         {
-            var argDataTypes = Utils.FinderUtils.TypeFinder.FindAllGenericParametersForType(controller).ToArray();
+            var argDataTypes = Utils.TypeUtils.TypeFinder.FindAllGenericParametersForType(controller).ToArray();
             if (argDataTypes.Length > 1)
             {
                 throw new Exception($"Controller: {controller.Name} has any data! You need remove some");

@@ -8,15 +8,17 @@ using UnityEngine;
 namespace GameCore.GameManager
 {
     [Serializable]
-    public abstract class BaseGameManager : MonoSingleton<BaseGameManager>
+    public class GameManager : MonoSingleton<GameManager>
     {
         [SerializeField] private GameManagerData _gameManagerData;
 
         private DataControllerFabric _fabric = new DataControllerFabric();
 
-        private readonly OnceCallEvent _onInitialize = new OnceCallEvent();
+        private readonly SimpleEvent _onInitialize = new SimpleEvent();
 
         private HashSet<IBaseGameManagerModuleController> _controllers = new HashSet<IBaseGameManagerModuleController>();
+
+        private bool _isInitialized;
 
         protected override void Initialize()
         {
@@ -27,12 +29,26 @@ namespace GameCore.GameManager
                 controller.GameManagerPrepared(this);
             }
 
+            _isInitialized = true;
             _onInitialize.Invoke();
         }
 
-        public void SubscribeOnInitialize(OnceCallEvent.Subscriber subscriber)
+        public void SubscribeOnInitialize(params SimpleEvent.Subscriber[] subscribers)
         {
-            _onInitialize.Subscribe(subscriber);
+            if (_isInitialized)
+            {
+                foreach (var subscriber in subscribers)
+                {
+                    subscriber.Invoke();
+                }
+            }
+
+            _onInitialize.Subscribe(subscribers);
+        }
+
+        public void Unsubscribe(object someObject)
+        {
+            _onInitialize.Unsubscribe(someObject);
         }
 
         public TController GetController<TController>()

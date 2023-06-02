@@ -5,13 +5,13 @@ using System.Reflection;
 
 namespace GameCore.Utils
 {
-    public static class FinderUtils
+    public static class TypeUtils
     {
+        private static IEnumerable<Assembly> ProjectAssemblies => AppDomain.CurrentDomain.GetAssemblies();
+        private static IEnumerable<Type> ProjectTypes => ProjectAssemblies.SelectMany(assembly => assembly.GetTypes());
+
         public static class TypeFinder
         {
-            private static IEnumerable<Assembly> ProjectAssemblies => AppDomain.CurrentDomain.GetAssemblies();
-            private static IEnumerable<Type> ProjectTypes => ProjectAssemblies.SelectMany(assembly => assembly.GetTypes());
-
             public static IEnumerable<Type> FindChildrenTypes(Type parentType, bool canBeAbstract = false)
             {
                 var childrenTypes =

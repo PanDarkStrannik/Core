@@ -11,14 +11,17 @@ namespace GameCore
         [SerializeField] private PlayerData _playerData;
 
         private readonly DataControllerFabric _fabric = new DataControllerFabric();
-        private readonly OnceCallEvent _onInitialize = new OnceCallEvent();
+        private readonly SimpleEvent _onInitialize = new SimpleEvent();
 
         private HashSet<IBasePlayerModuleController> _moduleControllers = new HashSet<IBasePlayerModuleController>();
+
+        public bool IsInitialized { get; private set; }
 
         private void Awake()
         {
             _moduleControllers = _playerData.Modules.Select(e => (IBasePlayerModuleController)_fabric.Create(e)).ToHashSet();
             InternalInitialize();
+            IsInitialized = true;
             _onInitialize.Invoke();
         }
 
@@ -27,8 +30,12 @@ namespace GameCore
 
         }
 
-        public void SubscribeOnInitialize(OnceCallEvent.Subscriber subscriber)
+        public void SubscribeOnInitialize(SimpleEvent.Subscriber subscriber)
         {
+            if (IsInitialized)
+            {
+                subscriber.Invoke();
+            }
             _onInitialize.Subscribe(subscriber);
         }
 
@@ -38,6 +45,9 @@ namespace GameCore
             {
                 controller.Destroy();
             }
+
+            _onInitialize.Clear();
+            IsInitialized = false;
         }
 
         public TController GetController<TController>()
