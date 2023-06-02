@@ -9,20 +9,19 @@ namespace GameCore.Systems.ConditionSystem
     {
         public event Action OnConditionsPassed;
 
-        private readonly InitializerFabric<ConditionController<IConditionData>, IConditionData> _fabric;
+        private readonly DataControllerFabric _fabric;
         private readonly bool _needRefreshAfterPassed;
-        private List<ConditionController<IConditionData>> _conditionControllers;
+        private HashSet<IConditionController> _conditionControllers;
 
-        public ConditionsHolder(InitializerFabric<ConditionController<IConditionData>, IConditionData> fabric,
-            bool needRefreshAfterPassed = true)
+        public ConditionsHolder(bool needRefreshAfterPassed = true)
         {
-            _fabric = fabric;
+            _fabric = new DataControllerFabric();
             _needRefreshAfterPassed = needRefreshAfterPassed;
         }
 
         public void AddConditions(params IConditionData[] conditions)
         {
-            _conditionControllers = conditions.Select(condition => _fabric.Create(condition)).ToList();
+            _conditionControllers = conditions.Select(conditionData => (IConditionController)_fabric.Create(conditionData)).ToHashSet();
 
             foreach (var condition in _conditionControllers)
             {
@@ -46,7 +45,7 @@ namespace GameCore.Systems.ConditionSystem
 
             if (_needRefreshAfterPassed)
             {
-                var conditionsData = _conditionControllers.Select(condition => condition.Data).ToArray();
+                var conditionsData = _conditionControllers.Select(condition => condition.ConditionData).ToArray();
                 _conditionControllers.Clear();
                 AddConditions(conditionsData);
             }

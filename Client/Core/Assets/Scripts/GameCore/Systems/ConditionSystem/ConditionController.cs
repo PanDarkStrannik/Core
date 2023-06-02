@@ -3,12 +3,12 @@ using GameCore.Patterns;
 
 namespace GameCore.Systems.ConditionSystem
 {
-    public abstract class ConditionController<TData> : FabricCreated<TData>, IConditionController
+    public abstract class ConditionController<TData> : DataControllerBase<TData>, IConditionController
         where TData : IConditionData
     {
-        private bool _isPassed;
         public event Action OnPassed;
 
+        public IConditionData ConditionData => Data;
         public bool IsPassed { get; private set; }
 
         public void Refresh()
@@ -29,9 +29,11 @@ namespace GameCore.Systems.ConditionSystem
         }
     }
 
-    public interface IConditionController
+    public interface IConditionController : IController
     {
         public event Action OnPassed;
+
+        public IConditionData ConditionData { get; }
 
         public bool IsPassed { get; }
 

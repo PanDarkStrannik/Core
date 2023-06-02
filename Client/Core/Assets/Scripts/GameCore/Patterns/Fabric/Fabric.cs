@@ -38,5 +38,9 @@ namespace GameCore.Patterns
         }
 
         protected abstract void InternalInitialize();
+        public void Initialize(IData someData)
+        {
+            Initialize((TData)someData);
+        }
     }
 }

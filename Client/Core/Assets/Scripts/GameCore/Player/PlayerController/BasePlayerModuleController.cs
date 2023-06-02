@@ -2,7 +2,7 @@ using GameCore.Patterns;
 
 namespace GameCore
 {
-    public abstract class BasePlayerModuleController<T> : FabricCreated<T>, IBasePlayerModuleController
+    public abstract class BasePlayerModuleController<T> : DataControllerBase<T>, IBasePlayerModuleController
         where T : BasePlayerModule
     {
         public virtual void Destroy()
@@ -11,7 +11,7 @@ namespace GameCore
         }
     }
 
-    public interface IBasePlayerModuleController
+    public interface IBasePlayerModuleController : IController
     {
         public void Destroy();
     }

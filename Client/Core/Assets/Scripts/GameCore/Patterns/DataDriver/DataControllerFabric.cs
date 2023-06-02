@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace GameCore.Patterns
 {
-    public class DataControllerFabric : Fabric<IDataController<IData>, IData>
+    public class DataControllerFabric : Fabric<IController, IData>
     {
         private readonly Dictionary<Type, Type> _dataCreatedPairs;
         public DataControllerFabric()
@@ -12,9 +12,9 @@ namespace GameCore.Patterns
             _dataCreatedPairs = CreateDataCreatedPair();
         }
 
-        protected override IDataController<IData> InternalCreate(IData data, Type wantCreate)
+        protected override IController InternalCreate(IData data, Type wantCreate)
         {
-            var dataController = (IDataController<IData>)Activator.CreateInstance(wantCreate);
+            var dataController = (IController)Activator.CreateInstance(wantCreate);
             dataController?.Initialize(data);
             return dataController;
         }
@@ -28,9 +28,13 @@ namespace GameCore.Patterns
         {
             var controllerType = typeof(IDataController<>);
 
-            return Utils.FinderUtils.TypeFinder.FindChildrenTypes(controllerType)
+            
+
+            var typeChildren = Utils.FinderUtils.TypeFinder.FindChildrenTypes(controllerType);
+
+            return typeChildren
                 .Select(GetControllerDataPair)
-                .ToDictionary(pair => pair.Key, pair => pair.Value);
+                .ToDictionary(pair => pair.Value, pair => pair.Key);
         }
 
         private static KeyValuePair<Type, Type> GetControllerDataPair(Type controller)

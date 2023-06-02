@@ -8,21 +8,25 @@ using UnityEngine;
 namespace GameCore.GameManager
 {
     [Serializable]
-    public abstract class BaseGameManager<T, TV> : MonoSingleton<TV>
-        where T: BaseGameManager<T, TV>.BaseGameManageControllerFabric, new()
-        where TV : BaseGameManager<T,TV>
+    public abstract class BaseGameManager : MonoSingleton<BaseGameManager>
     {
         [SerializeField] private GameManagerData _gameManagerData;
 
-        private T _fabric = new T();
+        private DataControllerFabric _fabric = new DataControllerFabric();
 
         private readonly OnceCallEvent _onInitialize = new OnceCallEvent();
 
-        public IReadOnlyList<IBaseGameManagerModuleController> Controllers { get; private set; } = new List<IBaseGameManagerModuleController>();
+        private HashSet<IBaseGameManagerModuleController> _controllers = new HashSet<IBaseGameManagerModuleController>();
 
         protected override void Initialize()
         {
-            Controllers = _gameManagerData.Modules.ToHashSet().Select(module => _fabric.Create(module)).ToList();
+            _controllers = _gameManagerData.Modules.Select(module => (IBaseGameManagerModuleController)_fabric.Create(module)).ToHashSet();
+
+            foreach (var controller in _controllers)
+            {
+                controller.GameManagerPrepared(this);
+            }
+
             _onInitialize.Invoke();
         }
 
@@ -34,12 +38,8 @@ namespace GameCore.GameManager
         public TController GetController<TController>()
             where TController : IBaseGameManagerModuleController
         {
-            Controllers.TryGet(out TController element);
+            _controllers.TryGet(out TController element);
             return element;
-        }
-
-        public abstract class BaseGameManageControllerFabric : InitializerFabric<BaseGameManagerModuleController<BaseGameManagerModule>, BaseGameManagerModule>
-        {
         }
     }
 }
